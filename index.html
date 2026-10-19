@@ -164,6 +164,9 @@ body.scrolled .themebtn{border-color:var(--border);background:var(--surface);col
 .up.done{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
 .up .nm{flex:1;min-width:150px;font-size:13.5px;font-weight:500}.up .nm .r{color:var(--danger)}.up .nm .sub{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:3px}
 .up .uphint{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:3px}
+.hint-btn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--border-strong);background:var(--surface-2);border-radius:5px;color:var(--muted);font-size:10px;font-weight:700;cursor:pointer;padding:0;vertical-align:middle;line-height:1;transition:.15s}
+.hint-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+.hint-btn.on{transform:rotate(180deg);border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
 .dlbtn{padding:6px 12px;border:1px solid var(--brand);border-radius:8px;background:var(--brand-soft);color:var(--brand);font-family:var(--disp);font-size:12px;font-weight:600;white-space:nowrap;transition:.13s}
 .dlbtn:hover{background:var(--brand);color:#fff}
 .up .st{margin-left:auto;font-size:12px;color:var(--faint)}.up.done .st{color:var(--ok);font-weight:600}
@@ -312,6 +315,7 @@ canvas.cf{position:fixed;inset:0;pointer-events:none;z-index:61}
           <div class="up" data-reqfile><span class="nm">주민등록등본 <span class="r">*</span><span class="sub">(주민등록번호 전체 표시본으로 제출)</span></span><label class="upbtn">선택<input type="file" accept="image/*,.pdf" hidden></label><span class="st">필수</span></div>
           <div class="up" data-reqfile><span class="nm">통장사본 <span class="r">*</span></span><label class="upbtn">선택<input type="file" accept="image/*,.pdf" hidden></label><span class="st">필수</span></div>
           <div class="up" data-reqfile><span class="nm">증명사진 <span class="r">*</span></span><label class="upbtn">선택<input type="file" accept="image/*" hidden></label><span class="st">필수</span></div>
+          <div class="up" data-reqfile><span class="nm">건강보험득실확인서 <span class="r">*</span> <button type="button" class="hint-btn" title="발급 방법 보기" onclick="var s=document.getElementById('hiSub');if(s.hasAttribute('hidden')){s.removeAttribute('hidden');this.classList.add('on');}else{s.setAttribute('hidden','');this.classList.remove('on');}">▾</button><span class="sub" id="hiSub" hidden><a href="https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do" target="_blank" rel="noopener" style="color:var(--brand);font-weight:700;text-decoration:underline">국민건강보험공단 바로가기 →</a><br>로그인 &gt; 자격득실확인서 발급 &gt; 프린트 발급<br><span style="color:var(--warn);font-weight:600">*다운받은 PDF의 암호(생년월일)를 해제 후 첨부해주세요</span><br>암호 해제 방법 : 다운받은 PDF &gt; 인쇄 &gt; PDF로 저장 &gt; 새파일명으로 저장</span></span><label class="upbtn">선택<input type="file" accept="image/*,.pdf" hidden></label><span class="st">필수</span></div>
           <div class="up"><span class="nm">이전 근무지 원천징수영수증 <span class="sub">(해당자에 한함)</span></span><label class="upbtn">선택<input type="file" accept="image/*,.pdf" hidden></label><span class="st">선택</span></div>
           <div class="up"><span class="nm">최종학력 증명서 <span class="sub">(해당자에 한함)</span></span><label class="upbtn">선택<input type="file" accept="image/*,.pdf" hidden></label><span class="st">선택</span></div>
           <div class="up"><span class="nm">경력 증명서 <span class="sub">(해당자에 한함)</span></span><label class="upbtn">선택<input type="file" accept="image/*,.pdf" hidden></label><span class="st">선택</span></div>
@@ -411,7 +415,7 @@ canvas.cf{position:fixed;inset:0;pointer-events:none;z-index:61}
         <div class="sign" id="sign"><canvas id="cv"></canvas><div class="ph">여기에 서명해 주세요</div><button class="clr" id="clr" type="button">지우기</button></div>
       </div>
 
-      <button class="submit" id="submit">첫 출근 준비 완료하기 ✦</button>
+      <button class="submit" id="submit">제출하기</button>
       <div class="saved" id="saved" hidden><span class="dot"></span>작성 내용이 자동 저장되었어요</div>
     </div>
   </section>
@@ -428,8 +432,8 @@ canvas.cf{position:fixed;inset:0;pointer-events:none;z-index:61}
       <div class="tk-faq-h">✅ 사전 준비 끝! 이제 첫 출근날만 기다리시면 돼요 — 첫날 안내</div>
       <div class="tk-q"><span class="ic">🕓</span><div class="body"><b>근무시간은 어떻게 되나요?</b>정규 근무시간은 <span class="hl">오전 9시 30분 ~ 오후 6시 30분</span>이에요.</div></div>
       <div class="tk-q"><span class="ic">☕</span><div class="body"><b>첫날은 뭘 하나요?</b>업무용 장비·하이웍스 계정 세팅 → 팀·조직도 소개 → 정보보안·사내 규정 오리엔테이션으로 이어져요.</div></div>
-      <div class="tk-q"><span class="ic">📝</span><div class="body"><b>첫날 작성하는 서류가 있나요?</b><span class="hl">근로계약서</span>, <span class="hl">기밀유지 서약서</span>, <span class="hl">개인정보 수집·이용 동의서</span>는 첫 출근일에 현장에서 함께 작성해요.</div></div>
-      <div class="tk-q"><span class="ic">👔</span><div class="body"><b>어떤 옷을 입나요?</b><span class="hl">[비즈니스 캐주얼]</span>이에요. 편하게 오셔도 괜찮아요.</div></div>
+      <div class="tk-q"><span class="ic">📝</span><div class="body"><b>첫날 작성하는 서류가 있나요?</b><span class="hl">근로계약서</span>, <span class="hl">기밀유지 서약서</span>는 첫 출근일에 경영관리팀과 함께 작성해요.</div></div>
+      <div class="tk-q"><span class="ic">👔</span><div class="body"><b>어떤 옷을 입나요?</b><span class="hl">복장 제한 없어요.</span> 편하게 오셔도 괜찮아요.</div></div>
       <div class="tk-q"><span class="ic">🍽️</span><div class="body"><b>점심은요?</b>점심시간은 <span class="hl">오전 11시 30분 ~ 오후 12시 30분</span>이에요. 팀과 함께 먹으며 편하게 이야기 나누고 서로 알아가는 시간이에요.</div></div>
       <div class="tk-q"><span class="ic">💬</span><div class="body"><b>궁금한 게 더 있다면?</b>언제든 경영관리팀(yurim@surepoint.kr)으로 편하게 연락 주세요.</div></div>
     </div>
@@ -484,13 +488,17 @@ $("#agree").addEventListener("change",()=>{save();check();});
 /* 이름 이니셜 → 하이웍스 아이디 추천 (예: 윤문영 → ymy) */
 const CHO=["g","k","n","d","t","r","m","b","p","s","s","","j","j","c","k","t","p","h"];
 const JUNG=["a","a","y","y","e","e","y","y","o","w","w","o","y","u","w","w","w","y","e","u","i"];
+// 성씨 관용 로마자 첫 글자 (예: 김=Kim→k, 이=Lee→l, 박=Park→p)
+const SURNAME={"김":"k","이":"l","박":"p","최":"c","정":"j","강":"k","조":"j","윤":"y","장":"j","임":"l","오":"o","한":"h","신":"s","서":"s","권":"k","황":"h","안":"a","송":"s","전":"j","홍":"h","유":"y","고":"k","문":"m","양":"y","손":"s","배":"b","백":"b","허":"h","남":"n","심":"s","노":"n","하":"h","곽":"k","성":"s","차":"c","주":"j","우":"w","구":"k","민":"m","진":"j","지":"j","엄":"e","채":"c","원":"w","천":"c","방":"b","공":"k","현":"h","함":"h","변":"b","염":"y","여":"y","추":"c","도":"d","소":"s","석":"s","선":"s","설":"s","마":"m","길":"k","연":"y","위":"w","표":"p","명":"m","기":"k","반":"b","류":"l","나":"n","왕":"w","금":"k","옥":"o","육":"y","인":"i","맹":"m","제":"j","모":"m","탁":"t","국":"k","어":"e","은":"e","편":"p","용":"y","예":"y","경":"k","봉":"b","사":"s","부":"b"};
 function nameInitials(name){
-  let out="";
+  let out="", idx=0;
   for(const ch of (name||"").trim()){
     const c=ch.charCodeAt(0)-0xAC00;
     if(c<0||c>11171)continue;                 // 한글 음절만 사용
+    if(idx===0&&SURNAME[ch]){out+=SURNAME[ch];idx++;continue;}  // 첫 음절=성씨는 관용 표기
     const cho=Math.floor(c/588), jung=Math.floor((c%588)/28);
     out+=CHO[cho]||JUNG[jung];                 // 초성이 ㅇ이면 모음 로마자로
+    idx++;
   }
   return out;
 }
